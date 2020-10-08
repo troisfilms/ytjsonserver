@@ -1,4 +1,7 @@
-Clone of [Youtube JSON SERVER](https://github.com/ThatGuySam/youtube-json-server) with caches changes to 24hr
+Fork of [Youtube JSON SERVER](https://github.com/ThatGuySam/youtube-json-server) with changes:
+- add more contentData (video duration, etc) for each video in the playlist
+- add statistic (viewCount, likeCount, etc) for each video in the playlist
+- up caches to 24hr
 
 ---
 
