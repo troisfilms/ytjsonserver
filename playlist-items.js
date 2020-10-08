@@ -65,7 +65,48 @@ module.exports = async function (req, res) {
         }
     }
 
+    let { allVidId, newItems } = [];
+
+    items.forEach(item => allVidId.push(item.contentDetails.videoId))
+
+    let vidIdchunked = chunkArray(allVidId, 50)
+
+    for (const val of vidIdchunked) {
+
+      const newData = await service.videos.list({
+          key: process.env.GOOGLE_API_KEY,
+          part: 'contentDetails,statistics',
+          id: val
+      })
+      newData.data.items.forEach(item => newItems.push(item))
+
+    }
+
+    realMerge(items, newItems)
+
     console.log(`Fetched ${items.length} videos from https://www.youtube.com/playlist?list=${id}`)
 
     res.json(items)
+}
+
+export function realMerge (to, from) {
+    for (const n in from) {
+
+        if (typeof to[n] != 'object') {
+            to[n] = from[n];
+        } else if (typeof from[n] == 'object') {
+            to[n] = realMerge(to[n], from[n]);
+        }
+    }
+    return to;
+};
+
+export function chunkArray(myArray, chunk_size) {
+    var results = [];
+
+    while (myArray.length) {
+        results.push(myArray.splice(0, chunk_size));
+    }
+
+    return results;
 }
