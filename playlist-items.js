@@ -65,7 +65,7 @@ module.exports = async function (req, res) {
         }
     }
 
-    let { allVidId, newItems } = [];
+    let allVidId = [], newItems = [];
 
     items.forEach(item => allVidId.push(item.contentDetails.videoId))
 
