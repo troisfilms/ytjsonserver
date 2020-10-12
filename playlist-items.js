@@ -42,7 +42,7 @@ module.exports = async function (req, res) {
     const items = data.items
 
     // If there are more results then push them to our playlist
-    if (data.nextPageToken !== null) {
+    if (items.length == 50 && data.nextPageToken !== null) {
 
         // Store the token for page #2 into our variable
         let pageToken = data.nextPageToken
