@@ -65,23 +65,35 @@ module.exports = async function (req, res) {
         }
     }
 
+    // find and remove private video
+    const itemToRemoveIndex = items.findIndex(function(item) {
+        return JSON.stringify(item.snippet.thumbnails) === '{}';
+    });
+
+    if(itemToRemoveIndex !== -1){
+        items.splice(itemToRemoveIndex, 1);
+    }
+
+    // Start to find contentDetails and statistics for each video
     let allVidId = [], newItems = [];
 
     items.forEach(item => allVidId.push(item.contentDetails.videoId))
 
-    let vidIdchunked = chunkArray(allVidId, 50)
+    // youtube limit max 50 videos for every api call
+    let vidIdchunked = chunkArray(allVidId, perPage)
 
     for (const val of vidIdchunked) {
 
-      const newData = await service.videos.list({
-          key: process.env.GOOGLE_API_KEY,
-          part: 'contentDetails,statistics',
-          id: val
-      })
-      newData.data.items.forEach(item => newItems.push(item))
+        const newData = await service.videos.list({
+            key: process.env.GOOGLE_API_KEY,
+            part: 'contentDetails,statistics',
+            id: val
+        })
 
+        newData.data.items.forEach(item => newItems.push(item))
     }
 
+    // merge all new data to items
     realMerge(items, newItems)
 
     console.log(`Fetched ${items.length} videos from https://www.youtube.com/playlist?list=${id}`)
