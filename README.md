@@ -27,5 +27,5 @@ In your command line run `vercel secret add youtube-json-google-key "MY_GOOGLE_K
 
 Deploy the server
 
-[![Deploy with Vercel Now](https://vercel.com/button)](https://vercel.com/new/project?template=https://gitlab.com/dikau/youtube-json-server)
+[![Deploy with Vercel Now](https://vercel.com/button)](https://vercel.com/new/project?template=https://github.com/troisfilms/ytjsonserver)
 
